@@ -4,7 +4,6 @@ import {Todolist} from './Todolist';
 import {v1} from 'uuid';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
-
 type todolistsType = {
     id: string
     title: string
@@ -49,64 +48,58 @@ function App() {
 
 
     function removeTask(todolistId: string, id: string) {
-        setTasks({...tasks, [todolistId]: tasks[todolistId].filter(t => t.id != id)})
+        setTasks({...tasks, [todolistId]: tasks[todolistId].filter(t => t.id !== id)})
         /*let filteredTasks = tasks.filter(t => t.id != id);
         setTasks(filteredTasks);*/
     }
 
     function addTask(todolistId: string, title: string) {
-        let newTask = {id: v1(), title: title, isDone: false}
-        setTasks({...tasks, [todolistId]: [newTask, ...tasks[todolistId]]})
+        let task = {id: v1(), title: title, isDone: false};
+        setTasks({...tasks, [todolistId]: [task, ...tasks[todolistId]]})
         /* let task = {id: v1(), title: title, isDone: false};
          let newTasks = [task, ...tasks];
          setTasks(newTasks);*/
     }
 
     function changeStatus(todolistId: string, taskId: string, isDone: boolean) {
-       /* let task = tasks[todolistId].find(t => t.id === taskId);
-        if (task) {
-            task.isDone = isDone;
-        }
-        setTasks({...tasks})*/
+        setTasks({...tasks, [todolistId]: tasks[todolistId].map(task => task.id ===taskId ? {...task, isDone: isDone} : task)})
         /* let task = tasks.find(t => t.id === taskId);
          if (task) {
              task.isDone = isDone;
          }
-         setTasks([...tasks]);*/
 
-        setTasks({...tasks, [todolistId]: tasks[todolistId].map(task => task.id === taskId ? {...task, isDone: isDone} : task)})
+         setTasks([...tasks]);*/
     }
+
 
     function changeFilter(todolistId: string, value: FilterValuesType) {
-        setTodolists(todolists.map((filtered) => todolistId === filtered.id ? {...filtered, filter: value} : filtered))
+        setTodolists(todolists.map(todolist => todolist.id === todolistId ? {...todolist,filter: value} : todolist))
     }
+
 
     return (
         <div className="App">
-            {todolists.map((todolist) => {
-                    let tasksForTodolist = tasks[todolist.id];
-                    if (todolist.filter === 'active') {
-                        tasksForTodolist = tasks[todolist.id].filter(t => t.isDone === false);
-                    }
-                    if (todolist.filter === 'completed') {
-                        tasksForTodolist = tasks[todolist.id].filter(t => t.isDone === true);
-                    }
+            {todolists.map(todolist => {
+                let tasksForTodolist = tasks[todolist.id];
 
-
-
-                    return <Todolist
-                        key={todolist.id}
-                        todolistId={todolist.id}
-                        title={todolist.title}
-                        tasks={tasksForTodolist}
-                        removeTask={removeTask}
-                        changeFilter={changeFilter}
-                        addTask={addTask}
-                        changeTaskStatus={changeStatus}
-                        filter={todolist.filter}
-                    />
+                if (todolist.filter === 'active') {
+                    tasksForTodolist = tasks[todolist.id].filter(t => t.isDone === false);
                 }
-            )}
+                if (todolist.filter === 'completed') {
+                    tasksForTodolist = tasks[todolist.id].filter(t => t.isDone === true);
+                }
+                return <Todolist
+                    todolistId={todolist.id}
+                    title={todolist.title}
+                    tasks={tasksForTodolist}
+                    removeTask={removeTask}
+                    changeFilter={changeFilter}
+                    addTask={addTask}
+                    changeTaskStatus={changeStatus}
+                    filter={todolist.filter}
+                />
+            })}
+
         </div>
     );
 }
