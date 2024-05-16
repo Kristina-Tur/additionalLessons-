@@ -1,54 +1,54 @@
 import React from 'react';
-import {City} from "./City";
-import {BanknotsType, MoneyType} from "./App";
+import {City} from './City';
+import {BanknotsType, MoneyType} from './App';
+import styled from 'styled-components';
 
 type CountryPropsType = {
-    data: Array<MoneyType>
-    setFilterValue: (filterValue: BanknotsType) => void
-  }
+    data: MoneyType[]
+    setFilterValue: (value: BanknotsType) => void
+    addMoney: (value: BanknotsType) => void
+    removeMoney: (value: BanknotsType) => void
+}
 
-export const Country = ({data, setFilterValue}: CountryPropsType) => {
-    // с деструктуризацией пожалуйста
-    const setAll=()=>{
-        // засетаем 'All'
+export const Country = ({data, setFilterValue, addMoney, removeMoney}: CountryPropsType) => {
+    const setAll = () => {
+        setFilterValue('ALL')
     }
 
-    const setUSD=()=>{
-        // засетаем 'USD'
+    const setUSD = () => {
+        setFilterValue('USD')
     }
 
-    const setRUB=()=>{
-        // засетаем 'RUB'
+    const setRUB = () => {
+        setFilterValue('RUB')
     }
 
-   const addMoneyHandler=()=>{
+    const addMoneyHandler = (value: BanknotsType) => {
+        addMoney(value)
+    }
 
-   }
-
-   const removeMoneyHandler=()=>{
-
-   }
+    const removeMoneyHandler = (value: BanknotsType) => {
+        removeMoney(value)
+    }
 
     return (
-        <span>
+        <Terminal>
             <div>
                 <button onClick={setAll}>All</button>
                 <button onClick={setUSD}>Dollars</button>
                 <button onClick={setRUB}>Rubles</button>
             </div>
             <div>
-                {/*сделаем в последнюю очередь*/}
-                <button>Положить 100$</button>
-                <button >Положить 100р.</button>
-                <button >Снять 100$</button>
-                <button >Снять 100р.</button>
+                <button onClick={() => addMoneyHandler('USD')}>Положить 100$</button>
+                <button onClick={() => addMoneyHandler('RUB')}>Положить 100р.</button>
+                <button onClick={() => removeMoneyHandler('USD')}>Снять 100$</button>
+                <button onClick={() => removeMoneyHandler('RUB')}>Снять 100р.</button>
             </div>
             <City data={data}/>
-        </span>
+        </Terminal>
     );
 };
 
-/*
 const Terminal = styled.span`
   display: flex;
   flex-direction: column;
@@ -56,4 +56,4 @@ const Terminal = styled.span`
   min-height: 100vh;
   font-size: 30px;
   background-color: #282c34;
-`*/
+`
