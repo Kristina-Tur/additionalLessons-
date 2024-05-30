@@ -23,12 +23,14 @@ export function Todolist(props: PropsType) {
     let [title, setTitle] = useState("")
     let [error, setError] = useState<string | null>(null)
 
+    /*let all = props.tasks
+
     if (props.filter === "active") {
-        props.tasks = props.tasks.filter(t => t.isDone === false);
+        props.tasks = all.filter(t => t.isDone === false);
     }
     if (props.filter === "completed") {
-        props.tasks = props.tasks.filter(t => t.isDone === true);
-    }
+        props.tasks = all.filter(t => t.isDone === true);
+    }*/
 
     const addTask = () => {
         let newTitle = title.trim();
